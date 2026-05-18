@@ -3,14 +3,21 @@ CFLAGS = -g -Wall
 LIBS = -lm
 
 SRC_DIR = src
-TARGET = imging 
+TARGETS = imging imging-cli 
 
-SRCS = $(SRC_DIR)/imging.c
+SERVER_SRCS = $(SRC_DIR)/imging.c $(SRC_DIR)/thread.c
+CLI_SRCS = $(SRC_DIR)/imging-cli.c
 
-all: $(TARGET)
+all: $(TARGETS)
 
-$(TARGET): $(SRCS) 
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) $(LIBS)
+imging: $(SERVER_SRCS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+imging-cli: $(CLI_SRCS) 
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
 
 clean:
-	rm -f $(TARGET)
+	rm -rf $(TARGET)
+
+.PHONY: all clean

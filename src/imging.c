@@ -95,7 +95,7 @@ void handleClientIo(void *arg) {
         }
 
         buf[count] = '\0';
-		printf("[Thread %ld] Recv from fd %d: %s", (long)pthread_self(), fd, buf);
+		printf("[Thread %ld] Recv from fd %d: %s\n", (long)pthread_self(), fd, buf);
 		write(fd, buf, count);
     }
 
@@ -132,6 +132,8 @@ int main(int argc, char *argv[]) {
     
 	bind(listen_sock, (struct sockaddr *)&addr, sizeof(addr));
     listen(listen_sock, 5);
+
+	setNonBlocking(listen_sock);
 
 	/* Create epoll instance */
 	epollfd = epoll_create1(0);

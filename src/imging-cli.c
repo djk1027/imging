@@ -152,11 +152,13 @@ int fileCheck(char *path) {
     return st.st_size;
 }
 
-/* The fset command is checked in advance and the command is sent to the server. */
+/* The fset command is checked in advance and the command is sent to the server. 
+   1. 
+   2. */
 int commandFileSet(int argc, char ***pArg) {
     char **argv = *pArg;
 
-    /* First, check the consistency of the fset command
+    /* check the consistency of the fset command
        before sending it to the server. */
     if (argc != 3) {
         fprintf(stderr, "Client Error: Wrong number of arguments (fset [KEY] [FILE])");
@@ -173,7 +175,7 @@ int commandFileSet(int argc, char ***pArg) {
     char header[1024];
     snprintf(header, sizeof(header), "%s %s %ld\n", argv[0], argv[1], flen);
 
-    /* Header transmission */
+    /* 1. Header transmission */
     send(cliSock.sock, header, strlen(header), 0);
 
     /* Opens the file at the input path and performs error checking. */
@@ -185,6 +187,7 @@ int commandFileSet(int argc, char ***pArg) {
         return -1;
     }
 
+    /* 2. File transmission */
     off_t offset = 0;
     ssize_t send_bytes = sendfile(cliSock.sock, fd, &offset, flen);
     

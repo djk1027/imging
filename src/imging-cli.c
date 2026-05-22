@@ -161,7 +161,7 @@ int commandFileSet(int argc, char ***pArg) {
     /* check the consistency of the fset command
        before sending it to the server. */
     if (argc != 3) {
-        fprintf(stderr, "Client Error: Wrong number of arguments (fset [KEY] [FILE])");
+        fprintf(stderr, "Client Error: Wrong number of arguments (fset [KEY] [FILE])\n");
         return -1;     
     }
 
@@ -232,7 +232,7 @@ void startCommand() {
 
             send(cliSock.sock, line, strlen(line), 0);
             read(cliSock.sock, buffer, 1024);
-            printf("Message from server: %s\n", buffer);
+            printf("%s\n", buffer);
 
             memset(buffer, 0, sizeof(buffer));
 

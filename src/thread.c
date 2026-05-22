@@ -1,9 +1,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <errno.h>
-#include <sys/epoll.h>
 
 #include "thread.h"
 
@@ -11,13 +9,6 @@
 
 /* Thread pool global variable */
 iThreadPool* pool = NULL;
-
-/* Socket non-blocking setup function */
-int setNonBlocking(int fd) {
-    int flags = fcntl(fd ,F_GETFL, 0);
-    if (flags == -1) return -1;
-    return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-}
 
 /* Worker thread main loop function */
 void* work(void* arg) {

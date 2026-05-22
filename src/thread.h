@@ -1,3 +1,11 @@
+#include <pthread.h>
+
+typedef struct iThreadTask {
+    void (*function)(void *arg);
+    void *argument;
+    struct iThreadTask *next;
+} iThreadTask;
+
 typedef struct iThreadPool {
     pthread_mutex_t lock;
     pthread_cond_t notify;
@@ -7,23 +15,20 @@ typedef struct iThreadPool {
     int shutdown;
 } iThreadPool;
 
-typedef struct iThreadTask {
-    void (*function)(void *arg);
-    void *argument;
-    struct iThreadTask *next;
-} iThreadTask;
-
-int setNonBlocking(int fd);
-
-/* Thread Pool function */
+/* Thread pool initialization */
 void iThreadPoolInit(int num_threads);
+
+/* Add client context to thread pool */
 void iThreadPoolAdd(void (*func)(void*), void* arg);
 
 /* Client handler */
 void handleClientIo(void *arg);
 
+typedef struct {
+    int server_fd;
+} ServerContext;
+
 /* The Task to be performed by the worker thread */
 typedef struct {
     int client_fd;
-    char *partialBuffer;
 } ClientContext;
